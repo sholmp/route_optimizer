@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include <ros/node_handle.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <visualization_msgs/Marker.h>
@@ -8,6 +9,7 @@
 #include "route_optimization_strategy.h"
 #include "route_optimizer.h"
 #include "greedy_route_optimization_strategy.h"
+#include "brute_force_route_optimization_strategy.h"
 
 using namespace std;
 
@@ -54,9 +56,10 @@ int main(int argc, char* argv[])
 {
     ros::init(argc, argv, "route_optimizer");
 
-    auto greedyRouteStrategy = make_shared<GreedyStrategy>();
+    // auto strategy = make_shared<GreedyStrategy>();
+    auto strategy = make_shared<BruteForceStrategy>();
 
-    RouteOptimizerNode routeOptimizerNode(markerPointsTopic, optimizedRouteTopic, greedyRouteStrategy);
+    RouteOptimizerNode routeOptimizerNode(markerPointsTopic, optimizedRouteTopic, strategy);
 
     ros::spin();
 

@@ -21,6 +21,19 @@ void addPathShading(std::vector<visualization_msgs::Marker>& points);
 double euclideanDistBetweenMarkers(const visualization_msgs::Marker& m1, const::visualization_msgs::Marker& m2);
 
 /**
+ * calculates the euclidean distance it takes to travel from @param markers[0] -> markers[size-1]
+ * visiting every node in the order of the vector
+ */
+double totalInOrderDistance(const std::vector<visualization_msgs::Marker>& markers);
+
+
+/**
+ * calculates the euclidean distance it takes to travel through @param markers in sequence
+ * specified by @param indiciesSequence
+ */
+double totalDistanceFollowingIndicies(const std::vector<visualization_msgs::Marker>& markers, const std::vector<int>& indiciesSequence);
+
+/**
  * Format a Marker and send to output stream
  */
 std::ostream& operator<<(std::ostream& lhs, const visualization_msgs::Marker& marker);

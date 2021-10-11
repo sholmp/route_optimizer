@@ -1,4 +1,5 @@
 #include <random>
+#include <stdexcept>
 
 #include "marker_utils.h"
 
@@ -59,6 +60,36 @@ double euclideanDistBetweenMarkers(const visualization_msgs::Marker& m1, const::
     
     return sqrt(squaredXdiff + squaredYdiff + squaredZdiff);
 }
+
+double totalInOrderDistance(const std::vector<visualization_msgs::Marker>& markers){
+    double total = 0;
+
+    for(int i = 0; i < markers.size() - 1; i++){
+        total += euclideanDistBetweenMarkers(markers[i], markers[i + 1]);
+    }
+
+    return total;
+}
+
+double totalDistanceFollowingIndicies(const std::vector<visualization_msgs::Marker>& markers, const std::vector<int>& indiciesSequence){
+    double total = 0;
+
+    try{
+        for(int i = 0; i < indiciesSequence.size() - 1; i++)
+        {
+            total += euclideanDistBetweenMarkers(markers[indiciesSequence[i]], markers[indiciesSequence[i + 1]]);
+        }
+    }
+    catch(std::out_of_range& e)
+    {
+        cout << "bad indiciesSequence" << endl;
+        return -1.0;
+    }
+
+    return total;
+}
+
+
 
 ostream& operator<<(ostream& lhs, const visualization_msgs::Marker& marker)
 {
