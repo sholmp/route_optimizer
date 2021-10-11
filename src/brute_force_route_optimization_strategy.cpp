@@ -22,14 +22,12 @@ vector<geometry_msgs::Pose> BruteForceStrategy::calculateOptimizedPath(const vis
 
 
     double minDistance = numeric_limits<double>::max();
-    ROS_INFO("I am here!");
     do{
         double dist = totalDistanceFollowingIndicies(markersCopy, indicies);
         if(dist < minDistance)
         {
             minDistance = dist;
             copy(indicies.begin(), indicies.end(), shortestIndicies.begin());
-            // shortestIndicies = copy()
         }
     }while(next_permutation(indicies.begin(), indicies.end()));
 

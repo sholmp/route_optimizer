@@ -1,6 +1,7 @@
 #ifndef MARKER_UTILS_H
 #define MARKER_UTILS_H
 
+#include "geometry_msgs/Pose.h"
 #include <vector>
 #include <ostream>
 #include <visualization_msgs/Marker.h>
@@ -18,7 +19,9 @@ void addPathShading(std::vector<visualization_msgs::Marker>& points);
 /*
  * calculates l2 norm between @param m1 and @param m2
  */
-double euclideanDistBetweenMarkers(const visualization_msgs::Marker& m1, const::visualization_msgs::Marker& m2);
+double euclideanDistBetweenMarkers(const visualization_msgs::Marker& m1, const visualization_msgs::Marker& m2);
+
+double euclideanDistBetweenPoses(const geometry_msgs::Pose& p1, const geometry_msgs::Pose& p2);
 
 /**
  * calculates the euclidean distance it takes to travel from @param markers[0] -> markers[size-1]

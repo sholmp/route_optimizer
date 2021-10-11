@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     
     ros::Publisher pub = nh.advertise<visualization_msgs::MarkerArray>(markerPointsTopic, 10, true); // latch the message so it will stay in topic queue
 
-    int numberOfRandomPoints = 10;
+    int numberOfRandomPoints = 15;
     int gridWidth = 5;
     vector<visualization_msgs::Marker> markers = generateRandomPoints(numberOfRandomPoints, gridWidth);
     visualization_msgs::MarkerArray markersMsg;

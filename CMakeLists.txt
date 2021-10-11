@@ -17,6 +17,8 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
 )
 
+find_package(GTest)
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -218,6 +220,9 @@ target_link_libraries(points_publisher ${catkin_LIBRARIES} route_optimizer_utili
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
+
+add_executable(test_optimization_strategies test/test_optimization_strategies.cpp)
+target_link_libraries(test_optimization_strategies gtest pthread route_optimizer_utilities)
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)

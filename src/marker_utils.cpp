@@ -51,7 +51,7 @@ vector<visualization_msgs::Marker> generateRandomPoints(int n, double gridWidth)
     return points;
 }
 
-double euclideanDistBetweenMarkers(const visualization_msgs::Marker& m1, const::visualization_msgs::Marker& m2)
+double euclideanDistBetweenMarkers(const visualization_msgs::Marker& m1, const visualization_msgs::Marker& m2)
 {
 
     double squaredXdiff = pow(m1.pose.position.x - m2.pose.position.x, 2);
@@ -60,6 +60,16 @@ double euclideanDistBetweenMarkers(const visualization_msgs::Marker& m1, const::
     
     return sqrt(squaredXdiff + squaredYdiff + squaredZdiff);
 }
+
+double euclideanDistBetweenPoses(const geometry_msgs::Pose& p1, const geometry_msgs::Pose& p2)
+{
+    double squaredXdiff = pow(p1.position.x - p2.position.x, 2);
+    double squaredYdiff = pow(p1.position.y - p2.position.y, 2);
+    double squaredZdiff = pow(p1.position.z - p2.position.z, 2);
+    
+    return sqrt(squaredXdiff + squaredYdiff + squaredZdiff);
+}
+
 
 double totalInOrderDistance(const std::vector<visualization_msgs::Marker>& markers){
     double total = 0;
@@ -88,7 +98,6 @@ double totalDistanceFollowingIndicies(const std::vector<visualization_msgs::Mark
 
     return total;
 }
-
 
 
 ostream& operator<<(ostream& lhs, const visualization_msgs::Marker& marker)
