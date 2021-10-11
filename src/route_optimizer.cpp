@@ -4,6 +4,7 @@
 #include <visualization_msgs/Marker.h>
 
 #include "endpoint_defines.h"
+#include "marker_utils.h"
 
 using namespace std;
 
@@ -24,38 +25,77 @@ double euclideanDistBetweenMarkers(const visualization_msgs::Marker& m1, const::
 ros::Publisher pub;
 
 // static ros::NodeHandle nh;
+
+ostream& operator<<(ostream& lhs, const visualization_msgs::Marker& marker)
+{
+    lhs << "(" << marker.pose.position.x << ", "
+     << marker.pose.position.y << ", " 
+     << marker.pose.position.z << ")";
+     return lhs;
+}
+
 void markerPointsCallback(const visualization_msgs::MarkerArray::ConstPtr& points)
 {
 
-    vector<visualization_msgs::MarkerArray> optimizedRoute;
+    vector<visualization_msgs::MarkerArray> optmizedRouteMsg;
+    vector<visualization_msgs::Marker> optimizedRoute;
+
+    // vector<visualization_msgs::Marker> pointsCopy = points->markers;
+    vector<visualization_msgs::Marker> pointsCopy = generateRandomPoints(10, 5);
 
     // seed node should be closest to (0,0)
     // for now, just first element of points:
 
-    visualization_msgs::Marker start = points->markers[0];
-    vector<bool> visited(points->markers.size());
-    visited[0] = true;
-    for(int i = 0; i < points->markers.size(); i++)
-    {
-        if(!visited[i])
-        {
+
+    
+
+
+    // vector<bool> visited(points->markers.size());
+    // visited[0] = true;
+    // for(int i = 0; i < points->markers.size(); i++)
+    // {
+    //     if(!visited[i])
+    //     {
             
-        }
-    }
+    //     }
+    // }
 
     // visualization_msgs::Marker start;
     // start.pose.position = 
 
 
-    // auto comparator = [&start](const visualization_msgs::Marker& m1, const visualization_msgs::Marker& m2){
-    //     return euclideanDistBetweenMarkers(m1, start) < euclideanDistBetweenMarkers(m2, start);
-    // };
-    // sort(points->markers.begin(), points->markers.end(), comparator);
+    //create a dummy entry point (0,0,0)
+    visualization_msgs::Marker start;
+    start.pose.position.x = 0;
+    start.pose.position.y = 0;
+    start.pose.position.z = 0;
 
+    cout << "points in random order:" << endl;
+    for(auto point: pointsCopy)
+        cout << point << endl;
 
+    auto comparator = [&start](const visualization_msgs::Marker& m1, const visualization_msgs::Marker& m2){
+        return euclideanDistBetweenMarkers(m1, start) > euclideanDistBetweenMarkers(m2, start);
+    };
 
+    while(pointsCopy.size())
+    {
+        sort(pointsCopy.begin(), pointsCopy.end(), comparator);
 
-    ROS_INFO("I was called!");
+        start = pointsCopy.back();
+        optimizedRoute.push_back(start);
+        pointsCopy.pop_back();
+    }
+
+    
+
+    // cout << "after sort!" << endl;
+    // for(auto point : pointsCopy)
+    //     cout << point << endl;
+    cout << "\nOptimized route:" << endl;
+    for(auto point : optimizedRoute)
+        cout << point << endl;
+
 }
 
 
@@ -71,7 +111,10 @@ int main(int argc, char* argv[])
 
     pub = nh.advertise<visualization_msgs::MarkerArray>(optimizedRouteTopic, 10, true);
 
-    
+    visualization_msgs::MarkerArray msg;
+
+    // markerPointsCallback(&msg);
+
     // visualization_msgs::Marker m1;
     // m1.pose.position.x = 3;
     // m1.pose.position.y = 4;
