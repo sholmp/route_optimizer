@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp  
   std_msgs
   visualization_msgs
+  geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -129,7 +130,10 @@ include_directories(
 #   src/${PROJECT_NAME}/route_optimization.cpp
 # )
 
-add_library(marker_utils src/marker_utils.cpp)
+add_library(route_optimizer_utilities 
+          src/marker_utils.cpp 
+          src/greedy_route_optimization_strategy.cpp
+          src/brute_force_route_optimization_strategy.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -159,9 +163,9 @@ add_executable(points_publisher src/points_publisher.cpp)
 #   ${catkin_LIBRARIES}
 # )
 
-target_link_libraries(marker_utils ${catkin_LIBRARIES})
-target_link_libraries(route_optimizer ${catkin_LIBRARIES} marker_utils)
-target_link_libraries(points_publisher ${catkin_LIBRARIES} marker_utils)
+target_link_libraries(route_optimizer_utilities ${catkin_LIBRARIES})
+target_link_libraries(route_optimizer ${catkin_LIBRARIES} route_optimizer_utilities)
+target_link_libraries(points_publisher ${catkin_LIBRARIES} route_optimizer_utilities)
 
 #############
 ## Install ##

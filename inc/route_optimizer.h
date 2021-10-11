@@ -2,13 +2,16 @@
 #define ROUTE_OPTIMIZER_H
 
 #include <string>
+#include <memory>
 #include <ros/node_handle.h>
 #include <visualization_msgs/MarkerArray.h>
+
+#include "route_optimization_strategy.h"
 
 class RouteOptimizerNode
 {
 public:
-    RouteOptimizerNode(const std::string& inputTopic, const std::string& vizTopic);
+    RouteOptimizerNode(const std::string& inputTopic, const std::string& vizTopic, const std::shared_ptr<IRouteOptimizationStrategy>& strategy);
 
     /**
     *  Calculate an optimized route through @points using greedy path planning.
@@ -20,6 +23,7 @@ public:
 private:
     std::string inputMarkersTopic_;
     std::string visualizationTopic_;
+    std::shared_ptr<IRouteOptimizationStrategy> strategy_;
 
     ros::NodeHandle nh_;
     ros::Subscriber sub_;
