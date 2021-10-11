@@ -50,6 +50,24 @@ vector<visualization_msgs::Marker> generateRandomPoints(int n, double gridWidth)
     return points;
 }
 
+double euclideanDistBetweenMarkers(const visualization_msgs::Marker& m1, const::visualization_msgs::Marker& m2)
+{
+
+    double squaredXdiff = pow(m1.pose.position.x - m2.pose.position.x, 2);
+    double squaredYdiff = pow(m1.pose.position.y - m2.pose.position.y, 2);
+    double squaredZdiff = pow(m1.pose.position.z - m2.pose.position.z, 2);
+    
+    return sqrt(squaredXdiff + squaredYdiff + squaredZdiff);
+}
+
+ostream& operator<<(ostream& lhs, const visualization_msgs::Marker& marker)
+{
+    lhs << "(" << marker.pose.position.x << ", "
+     << marker.pose.position.y << ", " 
+     << marker.pose.position.z << ")";
+     return lhs;
+}
+
 void addPathShading(vector<visualization_msgs::Marker>& points)
 {
     int i = 0;
