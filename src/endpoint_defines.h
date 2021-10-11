@@ -3,7 +3,7 @@
 
 #include <string>
 
-const std::string markerPointsTopic = "visualization_marker_array";
-const std::string optimizedRouteTopic = "optimized_route";
+const std::string markerPointsTopic = "mocked_marker_array";
+const std::string optimizedRouteTopic = "visualization_marker_array";
 
 #endif

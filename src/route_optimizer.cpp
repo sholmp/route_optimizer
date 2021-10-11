@@ -36,35 +36,11 @@ ostream& operator<<(ostream& lhs, const visualization_msgs::Marker& marker)
 
 void markerPointsCallback(const visualization_msgs::MarkerArray::ConstPtr& points)
 {
-
-    vector<visualization_msgs::MarkerArray> optmizedRouteMsg;
     vector<visualization_msgs::Marker> optimizedRoute;
+    // vector<visualization_msgs::Marker> pointsCopy = generateRandomPoints(10, 5);
+    vector<visualization_msgs::Marker> pointsCopy = points->markers;
 
-    // vector<visualization_msgs::Marker> pointsCopy = points->markers;
-    vector<visualization_msgs::Marker> pointsCopy = generateRandomPoints(10, 5);
-
-    // seed node should be closest to (0,0)
-    // for now, just first element of points:
-
-
-    
-
-
-    // vector<bool> visited(points->markers.size());
-    // visited[0] = true;
-    // for(int i = 0; i < points->markers.size(); i++)
-    // {
-    //     if(!visited[i])
-    //     {
-            
-    //     }
-    // }
-
-    // visualization_msgs::Marker start;
-    // start.pose.position = 
-
-
-    //create a dummy entry point (0,0,0)
+    // seed node chosne to be closest to (0,0)
     visualization_msgs::Marker start;
     start.pose.position.x = 0;
     start.pose.position.y = 0;
@@ -87,15 +63,18 @@ void markerPointsCallback(const visualization_msgs::MarkerArray::ConstPtr& point
         pointsCopy.pop_back();
     }
 
-    
-
-    // cout << "after sort!" << endl;
-    // for(auto point : pointsCopy)
-    //     cout << point << endl;
     cout << "\nOptimized route:" << endl;
     for(auto point : optimizedRoute)
         cout << point << endl;
 
+    addPathShading(optimizedRoute); // For visualization purposes.
+
+    visualization_msgs::MarkerArray optimizedRouteMsg;
+    optimizedRouteMsg.markers = optimizedRoute;
+
+    pub.publish(optimizedRouteMsg);
+
+    ROS_INFO("I was called");
 }
 
 
@@ -111,7 +90,7 @@ int main(int argc, char* argv[])
 
     pub = nh.advertise<visualization_msgs::MarkerArray>(optimizedRouteTopic, 10, true);
 
-    visualization_msgs::MarkerArray msg;
+    // visualization_msgs::MarkerArray msg;
 
     // markerPointsCallback(&msg);
 
