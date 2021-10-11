@@ -13,4 +13,5 @@ std::vector<visualization_msgs::Marker> generateRandomPoints(int n, double gridW
  */
 void addPathShading(std::vector<visualization_msgs::Marker>& points);
 
+
 #endif

@@ -19,20 +19,14 @@ int main(int argc, char* argv[])
     
     ros::Publisher pub = nh.advertise<visualization_msgs::MarkerArray>(markerPointsTopic, 10, true); // latch the message so it will stay in topic queue
 
-    vector<visualization_msgs::Marker> markers = generateRandomPoints(20, 4);
+    vector<visualization_msgs::Marker> markers = generateRandomPoints(30, 4);
     visualization_msgs::MarkerArray markersMsg;
     markersMsg.markers = markers;
 
 
     pub.publish(markersMsg);
-    ros::Rate rate(0.1);
 
-    sleep(1);
-    // while(ros::ok())
-    // {
-    //     
-    //     rate.sleep();
-    // }
+    sleep(1); // Don't terminate process immediately after pub (otherwise recipients are not notified)
 
     return 0;
 }

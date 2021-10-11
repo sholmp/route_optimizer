@@ -67,10 +67,27 @@ void markerPointsCallback(const visualization_msgs::MarkerArray::ConstPtr& point
     for(auto point : optimizedRoute)
         cout << point << endl;
 
-    addPathShading(optimizedRoute); // For visualization purposes.
+    visualization_msgs::Marker optimizedRouteMsg;
+    optimizedRouteMsg.header.stamp = ros::Time();
+    optimizedRouteMsg.header.frame_id = "map";
+    optimizedRouteMsg.ns = "my_namespace";
+    optimizedRouteMsg.id = 0;
+    optimizedRouteMsg.type = visualization_msgs::Marker::LINE_STRIP;
+    optimizedRouteMsg.action = visualization_msgs::Marker::ADD; 
+    optimizedRouteMsg.pose.orientation.w = 1.0;
+    optimizedRouteMsg.scale.x = 0.05;
+    optimizedRouteMsg.scale.y = 0.05;
+    optimizedRouteMsg.scale.z = 0.05;
+    optimizedRouteMsg.color.a = 1.0; // Don't forget to set the alpha!
+    optimizedRouteMsg.color.r = 0.0;
+    optimizedRouteMsg.color.g = 1;
+    optimizedRouteMsg.color.b = 0.0;
 
-    visualization_msgs::MarkerArray optimizedRouteMsg;
-    optimizedRouteMsg.markers = optimizedRoute;
+    for(const auto& p: optimizedRoute)
+    {
+        optimizedRouteMsg.points.push_back(p.pose.position);
+    }
+        
 
     pub.publish(optimizedRouteMsg);
 
@@ -88,7 +105,7 @@ int main(int argc, char* argv[])
     
     ros::Subscriber sub = nh.subscribe<visualization_msgs::MarkerArray>(markerPointsTopic, 10, markerPointsCallback);
 
-    pub = nh.advertise<visualization_msgs::MarkerArray>(optimizedRouteTopic, 10, true);
+    pub = nh.advertise<visualization_msgs::Marker>(optimizedRouteTopic, 10, true);
 
     // visualization_msgs::MarkerArray msg;
 

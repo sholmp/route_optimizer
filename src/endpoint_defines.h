@@ -4,6 +4,6 @@
 #include <string>
 
 const std::string markerPointsTopic = "mocked_marker_array";
-const std::string optimizedRouteTopic = "visualization_marker_array";
+const std::string optimizedRouteTopic = "visualization_marker";
 
 #endif
