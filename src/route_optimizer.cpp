@@ -8,9 +8,8 @@
 
 using namespace std;
 
-
 /*
- * 
+ * calculates l2 norm between @param m1 and @param m2
  */
 double euclideanDistBetweenMarkers(const visualization_msgs::Marker& m1, const::visualization_msgs::Marker& m2)
 {
@@ -24,8 +23,6 @@ double euclideanDistBetweenMarkers(const visualization_msgs::Marker& m1, const::
 
 ros::Publisher pub;
 
-// static ros::NodeHandle nh;
-
 ostream& operator<<(ostream& lhs, const visualization_msgs::Marker& marker)
 {
     lhs << "(" << marker.pose.position.x << ", "
@@ -34,13 +31,16 @@ ostream& operator<<(ostream& lhs, const visualization_msgs::Marker& marker)
      return lhs;
 }
 
+/**
+ *  Calculate an optimized route through @points using greedy path planning.
+ *  Will assume a starting point of (0,0,0)
+ */
 void markerPointsCallback(const visualization_msgs::MarkerArray::ConstPtr& points)
 {
     vector<visualization_msgs::Marker> optimizedRoute;
-    // vector<visualization_msgs::Marker> pointsCopy = generateRandomPoints(10, 5);
     vector<visualization_msgs::Marker> pointsCopy = points->markers;
 
-    // seed node chosne to be closest to (0,0)
+    // seed node chosen to be closest to (0,0)
     visualization_msgs::Marker start;
     start.pose.position.x = 0;
     start.pose.position.y = 0;
@@ -67,6 +67,8 @@ void markerPointsCallback(const visualization_msgs::MarkerArray::ConstPtr& point
     for(auto point : optimizedRoute)
         cout << point << endl;
 
+    // Insert boilerplate attributes for visualization purposes:
+
     visualization_msgs::Marker optimizedRouteMsg;
     optimizedRouteMsg.header.stamp = ros::Time();
     optimizedRouteMsg.header.frame_id = "map";
@@ -87,15 +89,9 @@ void markerPointsCallback(const visualization_msgs::MarkerArray::ConstPtr& point
     {
         optimizedRouteMsg.points.push_back(p.pose.position);
     }
-        
-
     pub.publish(optimizedRouteMsg);
 
-    ROS_INFO("I was called");
 }
-
-
-// void markerPoints
 
 int main(int argc, char* argv[])
 {
@@ -107,31 +103,7 @@ int main(int argc, char* argv[])
 
     pub = nh.advertise<visualization_msgs::Marker>(optimizedRouteTopic, 10, true);
 
-    // visualization_msgs::MarkerArray msg;
-
-    // markerPointsCallback(&msg);
-
-    // visualization_msgs::Marker m1;
-    // m1.pose.position.x = 3;
-    // m1.pose.position.y = 4;
-    // m1.pose.position.z = 0;
-
-    // visualization_msgs::MarkerArray msg;
-    // msg.markers = {m1};
-
-    // pub.publish(msg);
-
     ros::spin();
-
-
-
-    // visualization_msgs::Marker m2;
-
-    // m2.pose.position.x = 0;
-    // m2.pose.position.y = 0;
-    // m2.pose.position.z = 0;
-
-    // cout << euclideanDistBetweenMarkers(m1, m2);
 
 
     return 0;
