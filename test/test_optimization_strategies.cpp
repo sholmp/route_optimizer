@@ -35,7 +35,6 @@ TEST(StrategySuite, DistanceComparisonTest){
     };
 
     // The bruteforce path should always be shorter or at least equally as short as the greedy
-
     EXPECT_LE(calcDist(pathBrute), calcDist(pathGreedy)); 
 }
 

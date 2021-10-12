@@ -56,8 +56,8 @@ int main(int argc, char* argv[])
 {
     ros::init(argc, argv, "route_optimizer");
 
-    // auto strategy = make_shared<GreedyStrategy>();
-    auto strategy = make_shared<BruteForceStrategy>();
+    auto strategy = make_shared<GreedyStrategy>();
+    // auto strategy = make_shared<BruteForceStrategy>();
 
     RouteOptimizerNode routeOptimizerNode(markerPointsTopic, optimizedRouteTopic, strategy);
 
